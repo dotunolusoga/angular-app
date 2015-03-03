@@ -1,0 +1,11 @@
+button {
+	margin: 1em;
+}
+
+button:hover {
+	color: tomato;
+}
+
+h1 {
+	font-family: Lota;
+}

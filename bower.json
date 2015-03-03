@@ -1,0 +1,16 @@
+{
+  "name": "angular-app",
+  "version": "0.0.0",
+  "homepage": "https://github.com/dotunolusoga/angular-app",
+  "authors": [
+    "Dotun Olusoga <adedotun.olusoga@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
