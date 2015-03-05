@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Angular App</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
@@ -12,20 +13,64 @@
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <div class="container" ng-controller="FamilyController as family">
-      New Family:
-      <input ng-model="newFam">
-      <button ng-click="family.data.push(newFam)">Save</button>
-      <br>
-      Search: <input ng-model="nameFilter">
-      <br>
-      <button ng-click="familyReverse=!familyReverse">Change Sort</button>
-      <div class="helloFamily" ng-repeat="name in family.data
-      | filter:nameFilter
-      | orderBy:'':familyReverse">
-      <h1 style="display: inline">Hello {{name | uppercase}}</h1>
-      <button ng-click="family.removeFamily(name)">X</button>
-      </div>
+
+      <div class="container" ng-controller="FamilyController as family">
+        <h2>My Adorable, Absolutely  Awesome Family</h1>
+        <form name="family.newFam" ng-submit="family.addFam()">
+          <div class="form-group" ng-class="{'has-error': family.newFam.$dirty}">
+            <label class="control-label">First Name:</label>
+            <input class="form-control" ng-model="family.newFam.firstName" required minlength=5>
+            <span class="help-block" ng-show="family.newFam.$invalid && family.newFam.$dirty">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+          </div>
+          <div class="form-group" ng-class="{'has-error': family.newFam.$dirty}">
+            <label class="control-label">Last Name:</label>
+            <input class="form-control" ng-model="family.newFam.lastName" required>
+            <span class="help-block" ng-show="family.newFam.$dirty && family.newFam.$invalid">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+          </div>
+            <strong>Choose Family:</strong>
+            <select class="form-control" ng-model="family.newFam.family">
+                <option ng-selected="key===10" ng-repeat="(key, val) in family.cohortOptions" value={{key}}>{{val}}</option>
+                <!-- <option value="1">One</option>
+                <option value="2" selected>Two</option>
+                <option value="3">Three</option>
+                <option value="4">Four</option>
+                <option value="5">Five</option>
+                <option value="6">Six</option>
+                <option value="7">Seven</option>
+                <option value="8">Eight</option>
+                <option value="9">Nine</option>
+                <option value="10">Ten</option> -->
+            </select>
+          <input class="btn btn-success" type="submit" value="Save" ng-show="family.newFam.$valid">
+        </form>
+
+        <div>
+        <strong>Search:</strong> <input class="form-control" ng-model="nameFilter">
+        </div>
+        <table class="familyAddress">
+          <thead>
+            <th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Family</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="person in family.data | filter:nameFilter | orderBy:'':familyReverse">
+              <td>{{person.firstName}}</td>
+              <td>{{person.middleName}}</td>
+              <td>{{person.lastName}}</td>
+              <td>{{person.family}}</td>
+              <td><input type="checkbox" disabled ng-checked={{person.current}}></td>
+              <td><button ng-click="family.removeFamily(person)">X</button></td>
+            </tr>
+            <tr>
+              <td>
+                Search: <input ng-model="nameFilter">
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>
+            </tr>
+          </tbody>
+        </table>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="js/main.js"></script>
   </body>
