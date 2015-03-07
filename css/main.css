@@ -35,3 +35,11 @@ td {
 	margin: 5px;
 	padding: 10px;
 }
+
+input {
+	max-width: 40%;
+}
+
+select {
+	max-width: 40%;
+}
