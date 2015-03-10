@@ -14,60 +14,15 @@
     <![endif]-->
 
 
-      <div class="container" ng-controller="FamilyController as family">
-        <h2>My Adorable, Absolutely  Awesome Family</h1>
-        <form name="family.newFam" ng-submit="family.addFam()">
-          <div class="form-group" ng-class="{'has-error': family.newFam.$dirty}">
-            <label class="control-label">First Name:</label>
-            <input class="form-control" ng-model="family.newFam.firstName" required minlength=5>
-            <span class="help-block" ng-show="family.newFam.$invalid && family.newFam.$dirty">A block of help text that breaks onto a new line and may extend beyond one line.</span>
-          </div>
-          <div class="form-group" ng-class="{'has-error': family.newFam.$dirty}">
-            <label class="control-label">Last Name:</label>
-            <input class="form-control" ng-model="family.newFam.lastName" required>
-            <span class="help-block" ng-show="family.newFam.lastName.$error && family.newFam.$dirty">A block of help text that breaks onto a new line and may extend beyond one line.</span>
-          </div>
-            <strong>Choose Family:</strong>
-            <select class="form-control" ng-model="family.newFam.family">
-                <option ng-selected="key===10" ng-repeat="(key, val) in family.cohortOptions" value={{key}}>{{val}}</option>
-            </select>
-          <input class="btn btn-success" type="submit" value="Save" ng-show="family.newFam.$valid">
-        </form>
+      <div class="container">
+        <h2><a href="/#/family">My Adorable, Absolutely  Awesome Family</a></h2>
+        <a href="/#/family/new" class="btn btn-default">New Family</a>
+        <a href="/#/family/:uuid" class="btn btn-default">Show Family</a>
+        <div ng-view></div>
+      </div>
 
-        <div>
-        <strong>Search:</strong> <input class="form-control" ng-model="nameFilter">
-        </div>
-        <table class="familyAddress">
-          <thead>
-            <th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Family</th>
-          </thead>
-          <tbody>
-            <tr ng-repeat="person in family.data | filter:nameFilter | orderBy:'':familyReverse">
-              <td>{{person.firstName}}</td>
-              <td>{{person.middleName}}</td>
-              <td>{{person.lastName}}</td>
-              <td>{{person.family}}</td>
-              <td><input type="checkbox" disabled ng-checked={{person.current}}></td>
-              <td><button ng-click="family.removeFamily(person)">X</button></td>
-            </tr>
-            <tr>
-              <td>
-                Search: <input ng-model="nameFilter">
-              </td>
-              <td>
-              </td>
-              <td>
-              </td>
-              <td>
-              </td>
-              <td>
-              </td>
-              <td>
-              </td>
-            </tr>
-          </tbody>
-        </table>
     <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

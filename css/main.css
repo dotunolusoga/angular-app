@@ -14,20 +14,18 @@ h2 {
 	font-family: Verdana;
 }
 
-table {
-	padding: 0.5em;
+.table {
 	font-family: Verdana;
-	margin: 10px;
+	padding: 10px;
+	margin:20px;
 }
 
-tbody {
-	border: 1px solid lightgray;
-}
 
 th {
 	padding: 10px;
 	marging: 5px;
 	border-bottom: 1px solid lightgray;
+	background-color: lightgray;
 }
 
 td {
@@ -42,4 +40,16 @@ input {
 
 select {
 	max-width: 40%;
+}
+
+a {
+	margin: 10px;
+}
+
+.imageContainer {
+	width: 45px;
+}
+
+.showImage {
+	width: 200px;
 }
