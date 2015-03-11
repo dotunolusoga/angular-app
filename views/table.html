@@ -22,11 +22,15 @@
       </td>
       <td>{{person.family}}</td>
       <td><input type="checkbox" ng-change="family.updateFam(id)" ng-model="person.current"></td>
-      <td><button ng-click="family.removeFamily(id)">X</button></td>
       <td>
         <button class="btn btn-default">
-        <a href="/#/family/{{id}}">View</a></button>
-        <button class="btn btn-danger" ng-click="family.removeFamily(id)">X</button>
+        <a href="/#/family/{{id}}">View</a>
+        </button>
+      </td>
+      <td><a class="btn btn-warning" href="/#/family/{{id}}/edit"><span class="glyphicon glyphicon-pencil"></span></a>
+      </td>
+      <td>
+        <button class="btn btn-danger" ng-click="family.removeFamily(id)"><span class="glyphicon glyphicon-remove"></span></button>
       </td>
     </tr>
   </tbody>

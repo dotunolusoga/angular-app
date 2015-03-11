@@ -26,7 +26,7 @@ angular.module('family', ['ngRoute'])
 		})
 	})
 
-	.service('famService', function($http) {
+	.factory('famFactory', function($http) {
 		var exports = {},
         	FIREBASE_URL = 'https://familyapp.firebaseio.com';
 
@@ -79,11 +79,11 @@ angular.module('family', ['ngRoute'])
         return exports;
 	})
 
-	.controller('EditController', function($routeParams, famService, $location){
+	.controller('EditController', function($routeParams, famFactory, $location){
 		var family = this,
 			id     = $routeParams.uuid;
 
-		famService.findOne(id, function (data) {
+		famFactory.findOne(id, function (data) {
 			family.newFam = data;
 		})
 
@@ -102,23 +102,23 @@ angular.module('family', ['ngRoute'])
 	    ];
 
 		family.addorEditFam = function (){
-			famService.update(id, family.newFam, function () {
+			famFactory.update(id, family.newFam, function () {
 				$location.path('/family')
 			});
 		};
 
 	})
 
-	.controller('ShowController', function($routeParams, famService) {
+	.controller('ShowController', function($routeParams, famFactory) {
 		var family = this,
 			id     = $routeParams.uuid;
 
-		famService.findOne(id, function (data) {
+		famFactory.findOne(id, function (data) {
 			family.data = data;
 		});
 	})
 
-	.controller('FamilyController', function($scope, famService, $location){
+	.controller('FamilyController', function($scope, famFactory, $location){
 		var family = this;
 
 
@@ -136,7 +136,7 @@ angular.module('family', ['ngRoute'])
 	      'Ten'
 	    ];
 
-	    famService.findAll(function (exports) {
+	    famFactory.findAll(function (exports) {
 	    	family.data = exports;
 	    })
 
@@ -149,7 +149,7 @@ angular.module('family', ['ngRoute'])
 			family.newFam.lastName;
 			family.newFam.current;
 
-			famService.create(family.newFam, function (res) {
+			famFactory.create(family.newFam, function (res) {
 				family.data[res.name] = family.newFam;
 			     $location.path('/family')
 			});
@@ -157,13 +157,13 @@ angular.module('family', ['ngRoute'])
 
 
 		family.removeFamily = function (id) {
-			famService.delete(id, function (){
+			famFactory.delete(id, function (){
 				delete family.data[id];
 			});
 		};
 
 		family.updateFam = function (id) {
-			famService.update(id, family.data[id])
+			famFactory.update(id, family.data[id])
 		};
 
 	});
