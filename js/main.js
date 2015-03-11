@@ -24,18 +24,68 @@ angular.module('family', ['ngRoute'])
 		.otherwise({
 			redirectTo: '/family'
 		})
-
 	})
 
-	.controller('EditController', function($routeParams, $http, $location){
+	.service('famService', function($http) {
+		var exports = {},
+        	FIREBASE_URL = 'https://familyapp.firebaseio.com';
+
+        exports.findOne = function (id, cb) {
+	        $http
+				.get(FIREBASE_URL + '/family/' + id + '.json')
+				.success(function (data){
+					cb(data);
+				});
+        };
+
+        exports.findAll = function (cb) {
+	        $http
+				.get(FIREBASE_URL + '/family.json')
+				.success(function(data){
+					cb(data);
+
+				});
+        };
+
+        exports.create = function (data, cb) {
+        	$http
+				.post(FIREBASE_URL + '/family.json', data)
+			    .success(function(res){
+			      cb(res);
+			    })
+		};
+
+		exports.update = function (id, data, cb) {
+			var url = FIREBASE_URL + '/family/' + id + '.json';
+
+			$http
+			.put(url, data)
+			.success(function (res){
+				if (typeof cb === 'function') {
+					cb(res)
+				}
+			});
+		};
+
+		exports.delete = function (id, cb) {
+			var url = FIREBASE_URL + '/family/' + id + '.json';
+
+			$http.delete(url)
+			.success(function(){
+				cb();
+			});
+		}
+
+        return exports;
+	})
+
+	.controller('EditController', function($routeParams, famService, $location){
 		var family = this,
 			id     = $routeParams.uuid;
 
-		$http
-			.get('https://familyapp.firebaseio.com/family/' + id + '.json')
-			.success(function(data){
-				family.newFam = data;
-			});
+		famService.findOne(id, function (data) {
+			family.newFam = data;
+		})
 
 		family.cohortOptions = [
 	      'N/A',
@@ -52,30 +102,23 @@ angular.module('family', ['ngRoute'])
 	    ];
 
 		family.addorEditFam = function (){
-		$http
-			.put('https://familyapp.firebaseio.com/family/' + id + '.json',
-				family.newFam
-			)
-			.success(function (data){
+			famService.update(id, family.newFam, function () {
 				$location.path('/family')
 			});
-		}
+		};
 
 	})
 
-	.controller('ShowController', function($routeParams, $http){
+	.controller('ShowController', function($routeParams, famService) {
 		var family = this,
 			id     = $routeParams.uuid;
 
-		$http
-			.get('https://familyapp.firebaseio.com/family/' + id + '.json')
-			.success(function (data){
-				family.data = data;
-			})
-
-
+		famService.findOne(id, function (data) {
+			family.data = data;
+		});
 	})
-	.controller('FamilyController', function($scope, $http, $location){
+
+	.controller('FamilyController', function($scope, famService, $location){
 		var family = this;
 
 
@@ -93,75 +136,11 @@ angular.module('family', ['ngRoute'])
 	      'Ten'
 	    ];
 
-	  //   $http.put('https://familyapp.firebaseio.com/family.json',
-		 //   [
-			// {
-			// 	name: 'Dotun',
-			// 	firstName: 'Adedotun',
-			// 	middleName: 'Dee',
-			// 	lastName: 'Olusoga',
-			// 	current: true,
-			// 	family: 1
-			// },
-			// {
-			// 	name: 'Lamide',
-			// 	firstName: 'Olamide',
-			// 	middleName: 'Busayo',
-			// 	lastName: 'Olusoga',
-			// 	family: 1
-			// },
-			// {
-			// 	name: 'Deola',
-			// 	middleName: 'Adeola',
-			// 	firstName: 'Mariam',
-			// 	lastName: 'Yusuf',
-			// 	family: 2
-			// },
-			// {
-			// 	name: 'Tobi',
-			// 	firstName: 'Tobiloba',
-			// 	middleName: 'Fatimat',
-			// 	lastName: 'Yusuf',
-			// 	family: 2
-			// },
-			// {
-			// 	name: 'Tosin',
-			// 	firstName: 'Oluwatomisin',
-			// 	middleName: 'Adedapo',
-			// 	lastName: 'Ademola',
-			// 	family: 3
-			// },
-			// {
-			// 	name: 'Tomi',
-			// 	firstName: 'Tomilola',
-			// 	middleName: '',
-			// 	lastName: 'Ademola',
-			// 	family: 3
-			// },
-			// {
-			// 	name: 'Tope',
-			// 	firstName: 'Temitope',
-			// 	middleName: '',
-			// 	lastName: 'Ademola',
-			// 	family: 3
-			// },
-			// {
-			// 	name: 'Toke',
-			// 	firstName: 'Tomiike',
-			// 	middleName: '',
-			// 	lastName: 'Ademola',
-			// 	family: 3
-			// }
-			// ]);
+	    famService.findAll(function (exports) {
+	    	family.data = exports;
+	    })
 
-		$http
-			.get('https://familyapp.firebaseio.com/family.json')
-			.success(function(data){
-				family.data = data;
 
-			});
-
-		family.newFam = {};
 
 		family.addorEditFam = function () {
 			family.newFam.name;
@@ -170,34 +149,22 @@ angular.module('family', ['ngRoute'])
 			family.newFam.lastName;
 			family.newFam.current;
 
-
-			$http.post('https://familyapp.firebaseio.com/family.json',
-				{firstName: family.newFam.firstName, lastName: family.newFam.lastName, img: family.newFam.img})
-			    .success(function(data){
-			      family.data[data.name] = family.newFam;
-			      $location.path('/family');
-			    })
+			famService.create(family.newFam, function (res) {
+				family.data[res.name] = family.newFam;
+			     $location.path('/family')
+			});
 		};
 
 
 		family.removeFamily = function (id) {
-			console.log(id);
-			// var index = family.data.indexOf(person);
-			// family.data.splice(index, 1)
-			var url = 'https://familyapp.firebaseio.com/family/' + id + '.json';
-			$http.delete(url)
-			.success(function(){
+			famService.delete(id, function (){
 				delete family.data[id];
 			});
 		};
 
 		family.updateFam = function (id) {
-			var url = 'https://familyapp.firebaseio.com/family/' + id + '.json';
-			$http.put(url, family.data[id]);
+			famService.update(id, family.data[id])
 		};
 
-		function _clearForm (){
-			family.newFam = {};
-		}
 	});
 

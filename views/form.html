@@ -1,13 +1,13 @@
-<form name="family.newFam" ng-submit="family.addorEditFam()" class="form">
-  <div class="form-group" ng-class="{'has-error': family.newFam.$dirty}">
+<form name="family.newFamForm" ng-submit="family.addorEditFam()" class="form" novalidate>
+  <div class="form-group" ng-class="{'has-error': family.newFamForm.$dirty}">
     <label class="control-label">First Name:</label>
     <input class="form-control" ng-model="family.newFam.firstName" required minlength=3>
-    <span class="help-block" ng-show="family.newFam.$invalid && family.newFam.$dirty">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+    <span class="help-block" ng-show="family.newFamForm.$invalid && family.newFamForm.$dirty">A block of help text that breaks onto a new line and may extend beyond one line.</span>
   </div>
-  <div class="form-group" ng-class="{'has-error': family.newFam.$dirty}">
+  <div class="form-group" ng-class="{'has-error': family.newFamForm.$dirty}">
     <label class="control-label">Last Name:</label>
     <input class="form-control" ng-model="family.newFam.lastName" required>
-    <span class="help-block" ng-show="family.newFam.lastName.$error && family.newFam.$dirty">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+    <span class="help-block" ng-show="family.newFam.newFamForm.$error && family.newFamForm.$dirty">A block of help text that breaks onto a new line and may extend beyond one line.</span>
   </div>
   <div class="form-group">
     <label class="control-label">Image URL</label>
@@ -17,5 +17,5 @@
     <select class="form-control" ng-model="family.newFam.family">
         <option ng-selected="key===10" ng-repeat="(key, val) in family.cohortOptions" value={{key}}>{{val}}</option>
     </select>
-  <input class="btn btn-success" type="submit" value="Save" ng-show="family.newFam.$valid">
+  <input class="btn btn-success" type="submit" value="Save" ng-show="family.newFamForm.$valid">
 </form>
