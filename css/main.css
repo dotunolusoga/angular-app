@@ -31,12 +31,11 @@ th {
 td {
 	border-bottom: 1px solid lightgray;
 	margin: 5px;
-	padding: 10px;
 }
 
-input {
+/*input {
 	max-width: 40%;
-}
+}*/
 
 select {
 	max-width: 40%;

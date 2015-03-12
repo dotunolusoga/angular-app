@@ -16,13 +16,28 @@
 
       <div class="container">
         <h2><a href="/#/family">My Adorable, Absolutely  Awesome Family</a></h2>
+        <div ng-show="user">
         <a href="/#/family/new" class="btn btn-default">New Family</a>
         <a href="/#/family/:uuid" class="btn btn-default">Show Family</a>
+        <a href="/#/logout" class="btn btn-danger">Logout</a>
+        </div>
         <div ng-view></div>
       </div>
 
+    <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.module.js"></script>
+    <script src="js/main.config.js"></script>
+    <script src="js/auth/auth.config.js"></script>
+    <script src="js/main.constants.js"></script>
+    <script src="js/main.filters.js"></script>
+    <script src="js/auth/auth.factory.js"></script>
+    <script src="js/auth/auth.controller.js"></script>
+    <script src="js/auth/logout.controller.js"></script>
+    <script src="js/family/fam.factory.js"></script>
+    <script src="js/family/edit.controller.js"></script>
+    <script src="js/family/show.controller.js"></script>
+    <script src="js/family/family.controller.js"></script>
   </body>
 </html>
