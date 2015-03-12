@@ -1,0 +1,35 @@
+<div>
+    <strong>Search:</strong> <input class="form-control" ng-model="nameFilter">
+</div>
+<table class="table table-striped">
+  <thead>
+    <th>Image</th><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Family</th><th>Direct Family</th><th></th>
+  </thead>
+  <tbody>
+    <tr ng-repeat="(id, person) in family.data | filter:nameFilter | orderBy:'':familyReverse">
+      <td><img class="imageContainer" ng-src={{person.img}}></td>
+      <td>
+      <span ng-hide="family.edit" ng-dbclick="family[id].edit=true">{{person.firstName}}</span>
+      <input ng-show="family.edit" ng-model="person.name">
+      </td>
+      <td>
+      <span ng-hide=family.edit ng-dbclick=family.edit=true>{{person.middleName}}</span>
+      <input ng-show=family.edit ng-model=person.name>
+      </td>
+      <td>
+      <span ng-hide=family.edit ng-dbclick=family.edit=true>{{person.lastName}}</span>
+      <input ng-show=family.edit ng-model=person.name>
+      </td>
+      <td>{{person.family}}</td>
+      <td><input type="checkbox" ng-change="family.updateFam(id)" ng-model="person.current"></td>
+      <td>
+        <button class="btn btn-default">
+        <a href="/#/family/{{id}}"><span class="glyphicon glyphicon-search"></span></a>
+        </button>
+        <a class="btn btn-warning" href="/#/family/{{id}}/edit"><span class="glyphicon glyphicon-pencil"></span></a>
+        <button class="btn btn-danger" ng-click="family.removeFamily(id)"><span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
