@@ -19,7 +19,6 @@ function FamilyController($scope, famFactory, $location, COHORT_OPTIONS){
 		family.newFam.current;
 
 		famFactory.create(family.newFam, function (res) {
-			// family.data[res.name] = family.newFam;
 		     $location.path('/family')
 		});
 	};
